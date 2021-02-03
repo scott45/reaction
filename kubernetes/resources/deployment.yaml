@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dunia
+  labels:
+    #Project ID
+    app: website-stagging
+spec:
+  #Run two instances of our application
+  replicas: 2
+  selector:
+    matchLabels:
+      app: website-stagging
+  template:
+    metadata:
+      labels:
+        app: website-stagging
+    spec:
+      #Container details
+      containers:
+        - name: dunia
+          image: reactioncommerce/reaction
+          imagePullPolicy: Always
+          env:
+            - name: MONGO_URL
+              value: mongodb://mongo-0.mongo.db:27017,mongo-1.mongo.db:27017,mongo-2.mongo.db:27017/reaction?replicaSet=rs0
+          #Ports to expose
+          ports:
+          - containerPort: 3000
