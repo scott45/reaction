@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dunia-storefront
+  labels:
+    #Project ID
+    app: website-stagging-storefront
+spec:
+  #Run two instances of our application
+  replicas: 1
+  selector:
+    matchLabels:
+      app: website-stagging-storefront
+  template:
+    metadata:
+      labels:
+        app: website-stagging-storefront
+    spec:
+      #Container details
+      containers:
+        - name: dunia-storefront
+          image: reactioncommerce/example-storefront:fix-304-jrw421-product-title
+          imagePullPolicy: Always
+          env:
+            - name: INTERNAL_GRAPHQL_URL
+              value: http://34.122.206.39:3000/graphql
+            - name: CANONICAL_URL
+              value: http://23.236.49.103:4000
+            - name: BUILD_GRAPHQL_URL 
+              value: http://34.122.206.39:3000/graphql
+            - name: EXTERNAL_GRAPHQL_URL
+              value: http://34.122.206.39:3000/graphql
+            - name: OAUTH2_ADMIN_URL
+              value: http://hydra.reaction.localhost:4445
+            - name: OAUTH2_AUTH_URL
+              value: http://localhost:4444/oauth2/auth
+            - name: OAUTH2_CLIENT_ID
+              value: example-storefront
+            - name: OAUTH2_CLIENT_SECRET
+              value: CHANGEME
+            - name: OAUTH2_IDP_PUBLIC_CHANGE_PASSWORD_URL
+              value: http://localhost:4100/account/change-password?email=EMAIL&from=FROM
+            - name: OAUTH2_IDP_HOST_URL
+              value: http://identity.reaction.localhost:4100
+            - name: OAUTH2_PUBLIC_LOGOUT_URL
+              value: http://localhost:4444/oauth2/sessions/logout
+            - name: OAUTH2_TOKEN_URL
+              value: http://hydra.reaction.localhost:4444/oauth2/token
+            - name: SESSION_SECRET
+              value: CHANGEME
+          #Ports to expose
+          ports:
+          - containerPort: 4000
